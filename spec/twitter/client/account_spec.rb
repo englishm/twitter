@@ -171,6 +171,22 @@ describe Twitter::Client do
           user.name.should == "Erik Michaels-Ober"
         end
       end
+      
+      describe ".totals" do
+
+        before do
+          stub_get("account/totals.#{format}").
+            to_return(:body => fixture("totals.#{format}"), :headers => {:content_type => "application/#{format}; charset=utf-8"})
+        end
+
+        it "should get the correct resource" do
+          @client.totals
+          a_get("account/totals.#{format}").
+            should have_been_made
+        end
+
+      end
+
     end
   end
 end

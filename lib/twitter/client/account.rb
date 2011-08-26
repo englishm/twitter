@@ -153,6 +153,23 @@ module Twitter
         response = post('account/update_profile', options)
         format.to_s.downcase == 'xml' ? response['user'] : response
       end
+
+      # Returns the current count of friends, followers, updates (statuses) and favorites of the authenticating user.
+      #
+      # @see https://dev.twitter.com/docs/api/1/get/account/totals
+      # @rate_limited Yes
+      # @requires_authentication Yes
+      # @response_format `json`
+      # @response_format `xml`
+      # @return [Hashie::Mash] the current count of friends, followers, updates, and favorites of the authenticating user.
+      # @raise [Twitter::Unauthorized] Error raised when supplied user credentials are not valid.
+      # @example Return the totals for the authenticating user.
+      #   Twitter.totals
+      def totals()
+        response = get('account/totals')
+        format.to_s.downcase == 'xml' ? response['hash'] : response
+      end
+
     end
   end
 end
