@@ -187,6 +187,32 @@ describe Twitter::Client do
 
       end
 
+      # TODO: make this describe both GET and POST verbs
+      describe ".settings" do
+
+        before do
+          stub_get("account/settings.#{format}").
+            to_return(:body => fixture("settings_GET.#{format}"), :headers => {:content_type => "application/#{format}; charset=utf-8"})
+          stub_post("account/settings.#{format}").
+            with(:body => {:trend_location_woeid => "23424803"}).
+            to_return(:body => fixture("settings_POST.#{format}"), :headers => {:content_type => "application/#{format}; charset=utf-8"})
+        end
+
+        it "should get the correct resource on GET" do
+          @client.settings
+          a_get("account/settings.#{format}").
+            should have_been_made
+        end
+        
+        it "should get the correct resource on POST" do
+          @client.settings(:trend_location_woeid => "23424803")
+          a_post("account/settings.#{format}").
+            with(:body => {:trend_location_woeid => "23424803"}).
+            should have_been_made
+        end
+
+      end
+
     end
   end
 end
